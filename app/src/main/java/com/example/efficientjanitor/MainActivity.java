@@ -127,5 +127,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return trips;
     }
-
 }
+
+/*
+Below is written the data structures,Objects and function used:
+
+Data Structures:
+we use List of floats to store values(no need for double as it just gives a larger number(up to 64bits))
+then we pass the weight list to the function to get a Map<Integer, List<Float>> which represent the trip number and bag order accordingly
+List<Float> weightList: list that stores the weights of the bags as floats numbers
+Map<Integer, List<Float>> trips: map that stores the trip number as the key and a list of bag weights for that trip as the value
+
+we also use Primitive variables to achieve the following:
+float MAX_BAG_WEIGHT: constant that represents the maximum weight a bag can have used for function calculateTrips to determine number of trips needed and used for checking valid weight enter
+int numberOfBags: int that keeps track of the total number of bags for the UI
+float combineWeight: float number that represents the combined weight of all the bags for the UI
+
+Objects:
+EditText etInputBagWeight: EditText object where the user enters the weight of a bag
+TextView tvTotalBags, tvAnswer: These are TextView objects used to display the total number of bags and the answer respectively
+ImageButton btnCalc, btnReset: These are ImageButton objects which the user can click to calculate the trips or reset
+DecimalFormat decimalFormat: DecimalFormat object used to format the weights to have up to two decimal places
+
+The MainActivity class also implements the View.OnClickListener interface which means it has an onClick method that gets called when a view is clicked
+The onClick method checks which view was clicked and performs the appropriate action If calculate button was clicked, it calculates the trips and displays the result and If the reset button was clicked, it resets the inputs and outputs.
+The calculateTrips method calculates the minimum number of trips needed to carry all the bags and returns a Map<Integer, List<Float>> of the trips
+The initViews and initAnimationAndClickListeners methods are used to initialize the views and set up the click listeners and animations
+The setTotalBagsView method updates the display of the total number of bags and their combined weight
+The reset method resets the inputs and outputs
+*/
