@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EfficientJanitor</string>
+    <string name="welcome_janitor">Welcome janitor</string>
+    <string name="enter_bag_weight">Enter bag weight</string>
+    <string name="total_bags">%d Bags \n weighting %s</string>
+    <string name="warning">"Bag weight must be less or equal to %s"</string>
+</resources>
