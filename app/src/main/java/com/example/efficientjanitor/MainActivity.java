@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etInputBagWeight;
     private TextView tvTotalBags, tvAnswer, tvAnswerTotalTrips;
     private ImageButton btnCalc, btnReset;
-    private List<Float> weightList = new ArrayList<>();
+    private List<Bag> weightList = new ArrayList<>();
 
     // Local variables to keep track for UI purpose
     private int numberOfBags;
@@ -93,15 +93,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setTotalBagsView(++numberOfBags, decimalFormat.format(combineWeight));
 
             // Logic actions (usally done at viewModel but since this is a basic simple App i dont need to over complex simple tasks :) )
-            weightList.add(bagWeight);
+            weightList.add(new Bag(numberOfBags, bagWeight));
             // Get the result for the trips
-            Map<Integer, List<Float>> resultMap = calculateTrips(weightList);
+            Map<Integer, List<Bag>> resultMap = calculateTrips(weightList);
             // Concat string using string builder to show answer
             StringBuilder tripsText = new StringBuilder();
             // Each iteration over the Map mean one trip so we increment each time by one
             int numberOfTrips = 0;
             // Iterate over resultMap to get key=trip and value=bag order
-            for (Map.Entry<Integer, List<Float>> entry : resultMap.entrySet()) {
+            for (Map.Entry<Integer, List<Bag>> entry : resultMap.entrySet()) {
                 ++numberOfTrips;
                 tripsText.append(getString(R.string.trip)).append(entry.getKey()).append(": ").append(entry.getValue().toString()).append("\n");
             }
@@ -113,25 +113,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public Map<Integer, List<Float>> calculateTrips(List<Float> bags) {
+    public Map<Integer, List<Bag>> calculateTrips(List<Bag> bags) {
         // Create new list from passed list reference so i can modify it without changing the passed list
-        List<Float> localBag = new ArrayList<>(bags);
+        List<Bag> localBag = new ArrayList<>(bags);
         // Minimum trips is always at least one
         int tripNumber = 1;
         // Create a Map that will contain the trip number and the bags order for that trip
-        Map<Integer, List<Float>> trips = new HashMap<>();
-        /* Run a while loop on the localBag list so i iterate over the bags adding each bag to the current trip if the total weight does not exceed 3kg
+        Map<Integer, List<Bag>> trips = new HashMap<>();
+         /* Run a while loop on the localBag list so i iterate over the bags adding each bag to the current trip if the total weight does not exceed 3kg
         once a bag is added to a trip it is removed from the list this process continues until all bags have been added to trips */
         while (!localBag.isEmpty()) {
             float currentWeight = 0;
-            List<Float> currentTrip = new ArrayList<>();
-            Iterator<Float> iterator = localBag.iterator();
+            List<Bag> currentTrip = new ArrayList<>();
+            Iterator<Bag> iterator = localBag.iterator();
             // Inner while loop to iterate for next element
             while (iterator.hasNext()) {
-                float weight = iterator.next();
-                if (currentWeight + weight <= MAX_BAG_WEIGHT) {
-                    currentWeight += weight;
-                    currentTrip.add(Float.valueOf(decimalFormat.format(weight)));
+                Bag bag = iterator.next();
+                if (currentWeight + bag.getWeight() <= MAX_BAG_WEIGHT) {
+                    currentWeight += bag.getWeight();
+                    currentTrip.add(bag);
                     iterator.remove();
                 }
             }
@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return trips;
     }
+
 }
 
 /*
