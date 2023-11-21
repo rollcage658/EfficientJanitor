@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final float MAX_BAG_WEIGHT = 3.0f;
     private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
     private EditText etInputBagWeight;
-    private TextView tvTotalBags, tvAnswer;
+    private TextView tvTotalBags, tvAnswer, tvAnswerTotalTrips;
     private ImageButton btnCalc, btnReset;
     private List<Float> weightList = new ArrayList<>();
 
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCalc = findViewById(R.id.btn_calc);
         btnReset = findViewById(R.id.btn_reset);
         tvAnswer = findViewById(R.id.tv_answer);
+        tvAnswerTotalTrips = findViewById(R.id.tv_answer_number_of_trips);
 
         // Init for first time so 0 is shown instead of %d
         setTotalBagsView(numberOfBags, String.valueOf(combineWeight));
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setTotalBagsView(numberOfBags, String.valueOf(combineWeight));
         weightList.clear();
         tvAnswer.setText("");
+        tvAnswerTotalTrips.setText("");
     }
 
     // This function give some UI feedback so user can keep track of bags and weight(just for convenience)
@@ -96,11 +98,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Map<Integer, List<Float>> resultMap = calculateTrips(weightList);
             // Concat string using string builder to show answer
             StringBuilder tripsText = new StringBuilder();
-            // Itarate over resultMap to get key=trip and value=bag order
+            // Each iteration over the Map mean one trip so we increment each time by one
+            int numberOfTrips = 0;
+            // Iterate over resultMap to get key=trip and value=bag order
             for (Map.Entry<Integer, List<Float>> entry : resultMap.entrySet()) {
+                ++numberOfTrips;
                 tripsText.append(getString(R.string.trip)).append(entry.getKey()).append(": ").append(entry.getValue().toString()).append("\n");
             }
             tvAnswer.setText(tripsText.toString());
+            tvAnswerTotalTrips.setText(String.format(getString(R.string.trip_total),numberOfTrips));
 
         } else if (viewId == btnReset.getId()) {
             reset();
