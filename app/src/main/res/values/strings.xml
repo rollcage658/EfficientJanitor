@@ -4,4 +4,5 @@
     <string name="enter_bag_weight">Enter bag weight</string>
     <string name="total_bags">%d Bags \n weighting %s</string>
     <string name="warning">"Bag weight must be less or equal to %s"</string>
+    <string name="trip">"Trip "</string>
 </resources>
